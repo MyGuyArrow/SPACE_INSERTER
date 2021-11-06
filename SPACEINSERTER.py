@@ -1,6 +1,7 @@
 import os
 import pickle as pk
 import requests as rq
+import json
 
 cwd = os.getcwd()
 print("[Setting Data path]")
@@ -10,26 +11,50 @@ lockState = True
 
 try:
     print("[Checking files and directories]")
+
     os.mkdir(dataPath)
     print("[Creating Directory: Data, in CWD]")
+
     print("[Creating file: CODE.txt]")
     with open(dataPath+"\\CODE.txt","w") as f:
         f.write("[insert code here]")
         f.close()
+
     print("[Creating file: readme.txt]")
     with open(dataPath+'\\readme.txt', 'w') as f:
         f.write('please append the file "CODE" for space insertion program.')
         f.close()
+
     print("[Downloading file: ENGDICT.txt]")
     r = rq.get(url)
+    print(r)
     with open(dataPath+"\\ENGDICT.txt", "w") as f:
+        f.write(r.content)
+        f.close()
+
+    print("[Converting to binary dict file]")
+    with open(dataPath+"\\ENGDICT.txt", "r") as f:
+        content = f.read()
+        vocab = json.loads(content)
+        f.close()
+    with open(dataPath+"\\DICTIONARY", "wb") as f:
+        pk.dump(vocab, f)
+        f.close()
+
+
+    print("[Removing redundant files]")
+    os.remove(dataPath+"\\ENGDICT.txt")
 
     print("[Dependencies have been created]")
     print("[Please append file: CODE.txt, for futher use]")
     
 
 except FileExistsError:
-    pass
+    print("[Initialising]")
+    with open(dataPath+"\\DICTIONARY","rb") as f:
+        vocab = pk.load(f)
+        f.close()
+
 
 
 with open(dataPath+"\\CODE.txt","r") as f:

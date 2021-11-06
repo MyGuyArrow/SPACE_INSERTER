@@ -1,9 +1,11 @@
 import os
 import pickle as pk
+import requests as rq
 
 cwd = os.getcwd()
 print("[Setting Data path]")
 dataPath = cwd+"\\Data"
+url = "https://raw.github.com/MyGuyArrow/SPACE_INSERTER/blob/master/temp.txt"
 lockState = True
 
 try:
@@ -18,9 +20,10 @@ try:
     with open(dataPath+'\\readme.txt', 'w') as f:
         f.write('please append the file "CODE" for space insertion program.')
         f.close()
-    print
-    with open(dataPath+"\\ENGDICT", "rb") as f:
-        dict = pk.load(f)
+    print("[Downloading file: ENGDICT.txt]")
+    r = rq.get(url)
+    with open(dataPath+"\\ENGDICT.txt", "w") as f:
+
     print("[Dependencies have been created]")
     print("[Please append file: CODE.txt, for futher use]")
     

@@ -1,12 +1,12 @@
 import os
 import pickle as pk
 import requests as rq
-import json
+import ast
 
 cwd = os.getcwd()
 print("[Setting Data path]")
 dataPath = cwd+"\\Data"
-url = "https://raw.github.com/MyGuyArrow/SPACE_INSERTER/blob/master/temp.txt"
+url = "https://raw.githubusercontent.com/MyGuyArrow/SPACE_INSERTER/master/ENGDICT.txt"
 lockState = True
 
 try:
@@ -27,15 +27,17 @@ try:
 
     print("[Downloading file: ENGDICT.txt]")
     r = rq.get(url)
-    print(r)
+    stuff = str(r.content)
+    stuff = stuff[2 : -1]
+    #print(stuff)
     with open(dataPath+"\\ENGDICT.txt", "w") as f:
-        f.write(r.content)
+        f.write(stuff)
         f.close()
 
     print("[Converting to binary dict file]")
     with open(dataPath+"\\ENGDICT.txt", "r") as f:
         content = f.read()
-        vocab = json.loads(content)
+        vocab = ast.literal_eval(content)
         f.close()
     with open(dataPath+"\\DICTIONARY", "wb") as f:
         pk.dump(vocab, f)

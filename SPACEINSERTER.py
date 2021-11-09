@@ -51,7 +51,7 @@ try:
     print("[Please append file: CODE.txt, for futher use]")
     
 
-except FileExistsError:
+except:
     print("[Initialising]")
     with open(dataPath+"\\DICTIONARY","rb") as f:
         vocab = pk.load(f)
@@ -86,4 +86,52 @@ print("TEXT:\n==================================================================
 print(text)
 print("============================================================================")
 
+print("[Removing special characters]")
+sChar = ".,<>/|\\1-=_+[]{}':;\n"
+for i in sChar:
+    text = text.replace(i,"")
 
+print("[Generalising to Uppercase]")
+text = text.upper()
+print(text)
+
+
+lockState = True
+while lockState == True:
+    print("[Finding words]")
+    print("> English")
+    print("> Other - not yet suported")
+    inp = str(input(">>> "))
+    if inp == "1" or inp.upper() == "E" or inp.upper() == "ENGLISH":
+        lockState = False
+        break
+    else:
+        print()
+        pass
+maxCharLength = 13
+print("[Taking max character length to be 13]")
+done = False
+wordsfound = []
+text1 = text
+while done != True:
+    n = maxCharLength
+    while n!= 0:
+        possibleWord = text1[:n]
+        if possibleWord in vocab:
+            text1 = text1[n:]
+            #print(text1)
+            print("[Y/N]",possibleWord)
+            inp = str(input(">>> "))
+            if inp.upper() == "Y":
+                #pass  
+                #print(n)
+                wordsfound.append(possibleWord)
+                n = maxCharLength
+                continue
+            else:
+                break
+
+        else:
+            n-=1
+            continue
+    print("BREAK POINT")
